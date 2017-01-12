@@ -25,6 +25,7 @@ public class Generate2 {
 	int font = 30;
 	boolean lukeShared = false;
 	boolean jessShared = false;
+	Exchange2 exchange2 = new Exchange2();
 
 	public Scene generateScene(Stage stage) {
 
@@ -33,6 +34,10 @@ public class Generate2 {
 
 		Background background = new Background(new BackgroundFill(Color.DARKGREY, CornerRadii.EMPTY, Insets.EMPTY));
 		generatePane.setBackground(background);
+
+		Button nextButton = new Button("Next");
+		nextButton.setOnAction(e -> stage.setScene(exchange2.generateScene(stage)));
+		generatePane.getChildren().add(nextButton);
 
 		// Back Button
 		Button backbutton = new Button("Home");
@@ -48,20 +53,20 @@ public class Generate2 {
 		// Generate G and P
 		// g
 
+		Label pLabel = new Label();
+		pLabel.setTranslateX(-50);
+		pLabel.setTranslateY(-145);
+		pLabel.setTextFill(num.pColor);
+		pLabel.setText(Integer.toString((int) num.getP()));
+		pLabel.setFont(new Font(font));
+
 		Label gLabel = new Label();
 		gLabel.setTranslateX(50);
 		gLabel.setTranslateY(-145);
 		gLabel.setTextFill(num.gColor);
+		gLabel.setText(Integer.toString((int) num.getG()));
 		gLabel.setFont(new Font(font));
-
-		// p
-
-		Label pLabel = new Label();
-		pLabel.setTranslateX(-50);
-		pLabel.setTranslateY(-145);
-		pLabel.setFont(new Font(font));
-		pLabel.setTextFill(num.pColor);
-		generatePane.getChildren().addAll(gLabel,pLabel);
+		generatePane.getChildren().addAll(gLabel, pLabel);
 
 		Line line = new Line();
 		line.setStartX(-250);
@@ -145,8 +150,8 @@ public class Generate2 {
 
 		SequentialTransition jessSeq = new SequentialTransition(fjessLukeKeyLabel, fjessRaisedPrivateLabel, fJessMod,
 				fJessModP, fjessSharedKeyValueLabel);
-		generatePane.getChildren().addAll(jessPrivateKeyLabel, jessSharedKeyLabel, jessLukeKeyLabel, jessRaisedPrivateLabel, jessMod,
-				jessModP, jessSharedKeyValueLabel);
+		generatePane.getChildren().addAll(jessPrivateKeyLabel, jessSharedKeyLabel, jessLukeKeyLabel,
+				jessRaisedPrivateLabel, jessMod, jessModP, jessSharedKeyValueLabel);
 		Button jessKeyButton = new Button("Generate Jessica's Shared Key");
 		jessKeyButton.setOnAction(e -> {
 			{

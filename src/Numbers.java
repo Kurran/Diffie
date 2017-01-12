@@ -43,12 +43,12 @@ public class Numbers {
 		Numbers.lukePrivate = lukePrivate;
 	}
 	
-	public double getLukeKey() {
+	public static double getLukeKey() {
 		return lukeKey;
 	}
 
-	public void setLukeKey(double lukeKey) {
-		this.lukeKey = lukeKey;
+	public static void setLukeKey(double lukeKey) {
+		Numbers.lukeKey = lukeKey;
 	}
 	
 	

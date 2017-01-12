@@ -303,6 +303,7 @@ public class Generate {
 			num.setJessKey(x);
 			num.setJessPrivate(jessTemp);
 			jessSeq.play();
+			num.setJessSharedKey(x);
 			
 			}
 		});
@@ -390,6 +391,7 @@ public class Generate {
 			//double x = Math.pow(3,15) % 17;
 			double x = Math.pow(getG(), getLukekey())%getP();
 			setLukeKeySend(x);
+			num.setLukeSharedKey(x);
 			lukeKeyValueLabel.setText(Integer.toString((int)x));
 			num.setLukeKey(x);
 			num.setLukePrivate(lukeTemp);
