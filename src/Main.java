@@ -16,13 +16,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+    	
         window = primaryStage;
         Welcome scene1 = new Welcome();
         //Display scene 1 at first
         window.setScene(scene1.scene1(window));
         window.setTitle("Title");
-        window.setWidth(800);
-        window.setHeight(800);
+        //window.setWidth(800);
+        //window.setHeight(800);
         window.show();
        
     }

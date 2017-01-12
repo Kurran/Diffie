@@ -4,11 +4,14 @@ import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.*;
+import javafx.geometry.Insets;
 import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -79,17 +82,29 @@ public class Generate {
 	boolean jessBool = false;
 	boolean lukeBool = false;
 
-	boolean gPicked = false;
-	boolean pPicked = false;
+	static boolean gPicked = false;
+	static boolean pPicked = false;
 
 	StackPane generatePane = new StackPane();
 	Numbers num = new Numbers();
+	
+	int font = 30;
 
 	public Scene generateScene(Stage stage) {
 
 		Welcome welcomeScene = new Welcome();
 		Exchange1 exchange1Scene = new Exchange1();
 		
+		Background background = new Background(new BackgroundFill(Color.DARKGREY, CornerRadii.EMPTY, Insets.EMPTY));
+		generatePane.setBackground(background);
+		
+		
+		Label explainText = new Label("This is Luke Cage and Jessica Jones, they need to communicate securely, select values of P and G and generate their keys!");
+		generatePane.getChildren().add(explainText);
+		//explainText.setMaxWidth(350);
+		explainText.setWrapText(true);
+		explainText.setTranslateY(-350);
+		explainText.setFont(new Font(20));
 		
 		// Back Button
 		Button backbutton = new Button("Back");
@@ -118,19 +133,32 @@ public class Generate {
 		gLabel.setTranslateX(250);
 		gLabel.setTranslateY(-145);
 		gLabel.setTextFill(num.gColor);
-
+		gLabel.setFont(new Font(50));
+		
+		Label genTextLabel = new Label();
+		genTextLabel.setTranslateY(-350);
+		genTextLabel.setFont(new Font(20));
+		generatePane.getChildren().add(genTextLabel);
+		
 		Button gbutton = new Button("Set g");
 		gbutton.setOnAction(e -> {
 			String gStr = gTextField.getText();
 			double gTemp = Double.parseDouble(gStr);
 			setG(gTemp);
 			num.setG(gTemp);
-			gLabel.setText(gStr);
+			gLabel.setText("G = " + gStr);
 			gPicked = true;
 			generatePane.getChildren().remove(gTextField);
+			if(pPicked){
+				System.out.println("called");
+				generatePane.getChildren().remove(explainText);
+				genTextLabel.setText("Now generate their keys by choosing a private key!");
+			}
 		}
 
 		);
+		
+		
 
 		gbutton.setTranslateX(250);
 		gbutton.setTranslateY(-205);
@@ -145,16 +173,24 @@ public class Generate {
 		pLabel.setTranslateX(-250);
 		pLabel.setTranslateY(-145);
 		pLabel.setTextFill(num.pColor);
+		pLabel.setFont(new Font(50));
 
 		Button pbutton = new Button("Set P");
 		pbutton.setOnAction(e -> {
 			String pStr = pTextField.getText();
 			double pTemp = Double.parseDouble(pStr);
 			setP(pTemp);
-			pLabel.setText(pStr);
+			pLabel.setText("P = " + pStr);
 			pPicked = true;
 			generatePane.getChildren().remove(pTextField);
+			//generatePane.getChildren().remove(pLabel);
 			num.setP(pTemp);
+			System.out.println(pPicked);
+			if(gPicked){
+				System.out.println("called");
+				generatePane.getChildren().remove(explainText);
+				genTextLabel.setText("Now generate their keys by choosing a private key!");
+			}
 		}
 
 		);
@@ -162,6 +198,14 @@ public class Generate {
 		pbutton.setTranslateX(-250);
 		pbutton.setTranslateY(-205);
 		
+		Line line = new Line();
+		line.setStartX(-250);
+		line.setStartY(-200);
+		line.setEndX(-650);
+		line.setEndY(-200);
+		line.setTranslateY(200);
+		generatePane.getChildren().add(line);
+	
 		//Images
 		//URL url = this.getClass().getResourceAsStream("/luke.jpg");
 		Image lukeRead = new Image(this.getClass().getResourceAsStream("/luke.jpg"), 200, 200, false, false);
@@ -175,53 +219,63 @@ public class Generate {
 		jess.setTranslateY(200);
 		
 		
+		
+		
 		//Generate Jess Key
 		TextField jessTextField = new TextField();
 		jessTextField.setTranslateX(-250);
 		jessTextField.setTranslateY(75);
 		jessTextField.setMaxWidth(50);
-
+		
+		
 	
 		Label jessPrivateLabel = new Label();
 		jessPrivateLabel.setTranslateX(-250);
 		jessPrivateLabel.setTranslateY(350);
 		jessPrivateLabel.setTextFill(num.jessPrivateNumberColor);
+		jessPrivateLabel.setFont(new Font(22));
 		
 		Label jessG = new Label();
 		jessG.setTranslateX(-350);
 		jessG.setTranslateY(-50);
 		jessG.setTextFill(num.gColor);
+		jessG.setFont(new Font(font));
 		FadeTransition fJessG = new FadeTransition(Duration.millis(1000),jessG);
 		fJessG.setFromValue(0);
 		fJessG.setToValue(1);
 		
 		Label jessGpow = new Label();
-		jessGpow.setTranslateX(-335);
-		jessGpow.setTranslateY(-70);
+		jessGpow.setTranslateX(-330);
+		jessGpow.setTranslateY(-75);
+		jessGpow.setFont(new Font(font));
 		jessGpow.setTextFill(num.jessPrivateNumberColor);
 		FadeTransition fJessGpow = new FadeTransition(Duration.millis(1000),jessGpow);
 		fJessGpow.setFromValue(0);
 		fJessGpow.setToValue(1);
 		
-		
-		Label jessModP = new Label();
-		jessModP.setTranslateX(-275);
-		jessModP.setTranslateY(-50);
-		jessModP.setTextFill(num.pColor);
-		FadeTransition fJessModP = new FadeTransition(Duration.millis(1000),jessModP);
-		fJessModP.setFromValue(0);
-		fJessModP.setToValue(1);
-		
 		Label jessMod = new Label();
-		jessMod.setTranslateX(-305);
+		jessMod.setTranslateX(-295);
 		jessMod.setTranslateY(-50);
+		jessMod.setFont(new Font(font));
 		FadeTransition fJessMod = new FadeTransition(Duration.millis(1000),jessMod);
 		fJessMod.setFromValue(0);
 		fJessMod.setToValue(1);
 		
+		Label jessModP = new Label();
+		jessModP.setTranslateX(-215);
+		jessModP.setTranslateY(-50);
+		jessModP.setTextFill(num.pColor);
+		jessModP.setFont(new Font(font));
+		FadeTransition fJessModP = new FadeTransition(Duration.millis(1000),jessModP);
+		fJessModP.setFromValue(0);
+		fJessModP.setToValue(1);
+		
+		
+		
 		Label jessKeyValueLabel = new Label();
-		jessKeyValueLabel.setTranslateX(-250);
+		jessKeyValueLabel.setTranslateX(-160);
 		jessKeyValueLabel.setTranslateY(-50);
+		jessKeyValueLabel.setFont(new Font(font));
 		jessKeyValueLabel.setTextFill(num.jessSharedKeyColor);
 		FadeTransition fJessKeyVal = new FadeTransition(Duration.millis(1000),jessKeyValueLabel);
 		fJessKeyVal.setFromValue(0);
@@ -235,7 +289,7 @@ public class Generate {
 			String jessStr = jessTextField.getText();
 			double jessTemp = Double.parseDouble(jessStr);
 			setJesskey(jessTemp);
-			jessPrivateLabel.setText(jessStr);
+			jessPrivateLabel.setText("Jessica's Private Number = " + jessStr);
 			jessBool = true;
 			generatePane.getChildren().remove(jessTextField);
 			jessG.setText(Integer.toString((int)getG()));
@@ -257,8 +311,11 @@ public class Generate {
 		
 		//Generate Luke Key
 		
-		Label lukeKeyLabel = new Label();
-		lukeKeyLabel.setTranslateX(250);
+		Label lukePrivateKeyLabel = new Label();
+		lukePrivateKeyLabel.setTranslateX(250);
+		lukePrivateKeyLabel.setTranslateY(350);
+		lukePrivateKeyLabel.setTextFill(num.lukePrivateNumberColor);
+		lukePrivateKeyLabel.setFont(new Font(20));
 		
 		
 		TextField lukeTextField = new TextField();
@@ -266,18 +323,21 @@ public class Generate {
 		lukeTextField.setTranslateY(75);
 		lukeTextField.setMaxWidth(50);
 		
+		
 
 		Label lukeG = new Label();
-		lukeG.setTranslateX(250);
+		lukeG.setTranslateX(190);
 		lukeG.setTranslateY(-50);
 		lukeG.setTextFill(num.gColor);
+		lukeG.setFont(new Font(font));
 		FadeTransition fLukeG = new FadeTransition(Duration.millis(1000),lukeG);
 		fLukeG.setFromValue(0);
 		fLukeG.setToValue(1);
 		
 		Label lukeGpow = new Label();
-		lukeGpow.setTranslateX(265);
-		lukeGpow.setTranslateY(-70);
+		lukeGpow.setTranslateX(210);
+		lukeGpow.setTranslateY(-75);
+		lukeGpow.setFont(new Font(font));
 		lukeGpow.setTextFill(num.lukePrivateNumberColor);
 		FadeTransition fLukeGpow = new FadeTransition(Duration.millis(1000),lukeGpow);
 		fLukeGpow.setFromValue(0);
@@ -285,26 +345,29 @@ public class Generate {
 		
 		
 		Label lukeMod = new Label();
-		lukeMod.setTranslateX(285);
+		lukeMod.setTranslateX(245);
 		lukeMod.setTranslateY(-50);
+		lukeMod.setFont(new Font(font));
 		FadeTransition fLukeMod = new FadeTransition(Duration.millis(1000),lukeMod);
 		fLukeMod.setFromValue(0);
 		fLukeMod.setToValue(1);
 		
 		
 		Label lukeModP = new Label();
-		lukeModP.setTranslateX(315);
+		lukeModP.setTranslateX(325);
 		lukeModP.setTranslateY(-50);
 		lukeModP.setTextFill(num.pColor);
+		lukeModP.setFont(new Font(font));
 		FadeTransition fLukeModP = new FadeTransition(Duration.millis(1000),lukeModP);
 		fLukeModP.setFromValue(0);
 		fLukeModP.setToValue(1);
 		
 		
 		Label lukeKeyValueLabel = new Label();
-		lukeKeyValueLabel.setTranslateX(350);
+		lukeKeyValueLabel.setTranslateX(370);
 		lukeKeyValueLabel.setTranslateY(-50);
 		lukeKeyValueLabel.setTextFill(num.lukeSharedKeyColor);
+		lukeKeyValueLabel.setFont(new Font(font));
 		FadeTransition fLukeKeyVal = new FadeTransition(Duration.millis(1000),lukeKeyValueLabel);
 		fLukeKeyVal.setFromValue(0);
 		fLukeKeyVal.setToValue(1);
@@ -317,7 +380,7 @@ public class Generate {
 			String lukeStr = lukeTextField.getText();
 			double lukeTemp = Double.parseDouble(lukeStr);
 			setLukekey(lukeTemp);
-			lukeKeyLabel.setText(lukeStr);
+			lukePrivateKeyLabel.setText("Luke's Private Number = " + lukeStr);
 			lukeBool = true;
 			generatePane.getChildren().remove(lukeTextField);
 			lukeG.setText(Integer.toString((int)getG()));
@@ -352,7 +415,7 @@ public class Generate {
 		generatePane.getChildren().add(pLabel);
 		generatePane.getChildren().add(gLabel);
 		generatePane.getChildren().add(jessPrivateLabel);
-		generatePane.getChildren().add(lukeKeyLabel);
+		generatePane.getChildren().add(lukePrivateKeyLabel);
 		generatePane.getChildren().add(jessTextField);
 		generatePane.getChildren().add(lukeTextField);
 		generatePane.getChildren().add(lukeKeyButton);
